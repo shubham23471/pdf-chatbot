@@ -147,5 +147,5 @@ pdf_file_paths = ["/".join([BASE_PATH, path]) for path in os.listdir(BASE_PATH) 
 # documents = convert_to_json(pdf_file_paths[2:])
 documents = convert_to_json(pdf_file_paths)
 
-with open('./intermediate_data/extract_pdf_md_data.json', 'w') as f:
+with open('./intermediate_data/extracted_pdf_md_data.json', 'w') as f:
     json.dump(documents, f)
