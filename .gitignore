@@ -1,5 +1,6 @@
 intermediate_data/
 venv/
+chroma_db
 
 # chroma_db/
 # Byte-compiled / optimized / DLL files

@@ -43,21 +43,21 @@ for md_doc in markdown_data:
         split_data = split.model_dump()
 
         chunk_id = generate_chunk_id(page_id, "markdown_chunk", i, split_data["metadata"].get("headers", ""))
-        prev_chunk_id = chunks[-1]["chunk_id"] if chunks else None
+        prev_chunk_id = "None" if len(chunks) == 0 else chunks[-1]["chunk_id"]
         next_chunk_id = None  # Will be updated in the next iteration
 
 
         chunk = {
             "chunk_id": chunk_id,
             "prev_chunk_id": prev_chunk_id,
-            "next_chunk_id": None,  
+            "next_chunk_id": "None",  
             "page_id": page_id,
             "metadata": {**metadata, "headers": split_data["metadata"]},
             "page_content": split_data["page_content"],
             "chunk_index": i,
         }
 
-        if prev_chunk_id:
+        if chunks:
             chunks[-1]["next_chunk_id"] = chunk_id
 
         chunks.append(chunk)
