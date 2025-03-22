@@ -5,15 +5,6 @@ from itertools import islice
 import json
 
 
-# Check if CUDA is available and set device
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}")
-
-# Loading the embdeding model
-model_name = "all-MiniLM-L6-v2" 
-model = SentenceTransformer(model_name)
-model = model.to(device)
-
 def get_chrome_client(persist_directory, collection_name):
     # Initialize ChromaDB client with updated configuration
     chroma_client = chromadb.PersistentClient(path=persist_directory)
@@ -85,13 +76,22 @@ def insert_chunks_in_batches(chunks, batch_size=100):
         except Exception as e: 
             print(f'GOT EXCEPTION WHILE INSERTING THIS BATCH: {e}')
 
-with open("./intermediate_data/chunks.json", 'r') as f: 
-    chunks = json.load(f) 
-    print(f'Total chunks: {len(chunks)}')
+if "__name__" == "__main__":
+    # Check if CUDA is available and set device
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"Using device: {device}")
 
-collection_name = "budget_rag"
-persist_directory = "./chroma_db"
-chroma_client, collection = get_chrome_client(persist_directory, collection_name)
-insert_chunks_in_batches(chunks)
+    # Loading the embdeding model
+    model_name = "all-MiniLM-L6-v2" 
+    model = SentenceTransformer(model_name)
+    model = model.to(device)
+    with open("./intermediate_data/chunks.json", 'r') as f: 
+        chunks = json.load(f) 
+        print(f'Total chunks: {len(chunks)}')
 
-print(f"Total number of document in {collection_name}collection: {collection.count()}")
+    collection_name = "budget_rag"
+    persist_directory = "./chroma_db"
+    chroma_client, collection = get_chrome_client(persist_directory, collection_name)
+    insert_chunks_in_batches(chunks)
+
+    print(f"Total number of document in {collection_name}collection: {collection.count()}")
