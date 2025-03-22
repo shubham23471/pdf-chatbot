@@ -76,14 +76,14 @@ def insert_chunks_in_batches(chunks, batch_size=100):
         except Exception as e: 
             print(f'GOT EXCEPTION WHILE INSERTING THIS BATCH: {e}')
 
-if "__name__" == "__main__":
+if __name__ == "__main__":
     # Check if CUDA is available and set device
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
     # Loading the embdeding model
-    model_name = "all-MiniLM-L6-v2" 
-    model = SentenceTransformer(model_name)
+    MODE_NAME = "all-MiniLM-L6-v2" 
+    model = SentenceTransformer(MODE_NAME)
     model = model.to(device)
     with open("./intermediate_data/chunks.json", 'r') as f: 
         chunks = json.load(f) 
